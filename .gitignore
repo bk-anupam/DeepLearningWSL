@@ -1,0 +1,8 @@
+ComputerVision/CNN/datasets/
+ComputerVision/CNN/lightning_logs/
+*.xml
+**/data
+*.png
+*.jpg
+logs
+model
