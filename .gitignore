@@ -1,8 +1,9 @@
 ComputerVision/CNN/datasets/
+ComputerVision/CNN/model/
 ComputerVision/CNN/lightning_logs/
-*.xml
+ComputerVision/CNN/logs/
+ComputerVision/CNN/wandb/
+ComputerVision/HSE_assignments/week1/
+ComputerVision/HSE_assignments/week1/face_imgs/
+Training/images/
 **/data
-*.png
-*.jpg
-logs
-model
