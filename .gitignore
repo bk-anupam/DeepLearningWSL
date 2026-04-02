@@ -1,4 +1,4 @@
-ComputerVision/CNN/datasets/
+ComputerVision/CNN/datasets/*
 ComputerVision/CNN/model/
 ComputerVision/CNN/lightning_logs/
 ComputerVision/CNN/logs/
@@ -8,3 +8,8 @@ ComputerVision/HSE_assignments/week1/face_imgs/
 Training/images/
 **/data
 AutoEncoders/wandb/
+GANs/mnist_data/
+*.h5
+.idea/
+settings.json
+.vscode/

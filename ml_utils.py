@@ -5,6 +5,7 @@ from torchvision.transforms import ToTensor
 from sklearn import model_selection
 from PIL import Image
 import torchvision.transforms.functional as F
+from torch.nn.utils.rnn import pad_sequence
 
 def get_imgs_mean_stddev(imgs, axis=None):    
     """Get the mean and standard deviation for images in a dataset / mini-batch. It works by loading 
@@ -120,3 +121,38 @@ def show_batch(img_arr, label_arr, img_index, num_rows, num_cols, predict_arr=No
             title += f", Pred: {predict_arr[img_index]}"        
         ax.set_title(title)    
 
+# If the goal is to train with mini-batches, one needs to pad the sequences in each batch. 
+# In other words, given a mini-batch of size N, if the length of the largest sequence is L, 
+# one needs to pad every sequence with a length of smaller than L with zeros and make their 
+# lengths equal to L. Moreover, it is important that the sequences in the batch are in the 
+# descending order.
+def pad_collate(batch):
+    # Each element in the batch is a tuple (data, label)
+    # sort the batch (based on tweet word count) in descending order
+    sorted_batch = sorted(batch, key=lambda x:x[0].shape[0], reverse=True)
+    sequences = [x[0] for x in sorted_batch]
+    sequences_padded = pad_sequence(sequences, batch_first=True, padding_value=0)
+    # Also need to store the length of each sequence.This is later needed in order to unpad 
+    # the sequences
+    seq_len = torch.Tensor([len(x) for x in sequences])
+    labels = torch.Tensor([x[1] for x in sorted_batch])
+    return sequences_padded, seq_len, labels
+
+from pytorch_lightning.callbacks import Callback
+from pytorch_lightning import LightningModule, Trainer
+
+class MetricsAggCallback(Callback):
+    def __init__(self, metric_to_monitor, mode):
+        self.metric_to_monitor = metric_to_monitor
+        self.metrics = []
+        self.best_metric = None
+        self.mode = mode
+        self.best_metric_epoch = None
+
+    def on_epoch_end(self, trainer: Trainer, pl_module: LightningModule):
+        metric_value = trainer.callback_metrics[self.metric_to_monitor].cpu().detach().item()
+        print(f"metric {self.metric_to_monitor} = {metric_value}")
+        self.metrics.append(metric_value)
+        if self.mode == "max":
+            self.best_metric = max(self.metrics)
+            self.best_metric_epoch = self.metrics.index(self.best_metric)    
