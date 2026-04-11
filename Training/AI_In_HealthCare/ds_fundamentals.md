@@ -4,6 +4,8 @@
 These models assume that the relationship between the inputs and the output follows a smooth, predictable line or curve. They work by assigning a fixed "weight" (importance) to every feature.
 
 * **Examples:** Linear Regression, Logistic Regression, Ridge/Lasso Regression.
+
+![alt text](image-3.png)
 * **How they think:** Like a standard medical risk calculator (e.g., the Framingham Risk Score). They add up the weighted points of various symptoms to get a final score.
 * **When to use them:**
     * **The Baseline:** Always start here. They are fast, cheap, and set a performance baseline.
@@ -13,6 +15,8 @@ These models assume that the relationship between the inputs and the output foll
 
 ## 2. Tree-Based & Ensemble Models (The Flowcharts)
 Instead of math equations, these models use logic. They split the data by asking a series of "If/Then" questions (e.g., "Is age > 60?" -> "Is blood pressure > 140?").
+
+![alt text](image-1.png)
 
 * **Examples:** Decision Trees, Random Forest, Gradient Boosting Machines (XGBoost, LightGBM).
 * **How they think:** Like a clinical triage protocol. A single Decision Tree is one protocol. An "Ensemble" (like a Random Forest) acts like a Tumor Board—it asks 1,000 different decision trees for their opinion and takes a majority vote.
@@ -25,6 +29,8 @@ Instead of math equations, these models use logic. They split the data by asking
 These models make decisions based on physical proximity in a mathematical space. 
 
 * **Examples:** K-Nearest Neighbors (KNN), Support Vector Machines (SVM).
+
+![alt text](image-2.png)
 * **How they think:** * **KNN:** "You are who your neighbors are." To diagnose a new patient, the model looks at the 5 historical patients whose lab results look the most identical and copies their diagnosis.
     * **SVM:** "Drawing boundaries." It tries to draw the widest possible "street" or boundary line between different categories of data.
 * **When to use them:**
@@ -35,6 +41,8 @@ These models make decisions based on physical proximity in a mathematical space.
 All the models above are *Supervised* (they learn from historical labeled answers). *Unsupervised* models are given raw data with no labels and are asked to find hidden structures.
 
 * **Examples:** K-Means Clustering, Principal Component Analysis (PCA), Isolation Forests.
+![alt text](image.png)
+
 * **How they think:** Like an epidemiologist looking for patterns in a new outbreak without knowing what the disease is yet.
 * **When to use them:**
     * **Discovery / Clustering (K-Means):** Discovering new patient phenotypes (e.g., finding out that "Type 2 Diabetes" actually consists of 3 distinct sub-clusters based on lab profiles).
