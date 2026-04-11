@@ -121,3 +121,54 @@ Because the Mean and Variance are heavily influenced by outliers, we often look 
 
 * **Median:** The literal middle value when all data points are sorted from smallest to largest. If Bill Gates walks into a bar of 10 people, the *Mean* wealth skyrockets, but the *Median* wealth barely moves. It is highly robust to outliers.
 * **Mode:** The most frequently occurring value in the dataset.
+
+---
+
+## Binary vs. Multi-Class Classification
+
+In the context of Logistic Regression, the difference lies in the number of possible outcomes and how the model maps input to those categories.
+
+### Binary Classification
+* **The Goal:** Predict one of two mutually exclusive classes (e.g., $0$ for "Healthy", $1$ for "Sick").
+* **The Output:** A single probability value $P$ between $0$ and $1$.
+* **Decision Logic:** If $P > 0.5$, classify as $1$; otherwise, classify as $0$.
+* **The Function:** Uses the **Sigmoid** function to squash a single linear value $z$ into a probability.
+
+
+
+### Multi-Class Classification
+* **The Goal:** Predict one of $K$ classes (e.g., $0$ for "Covid", $1$ for "Flu", $2$ for "Pneumonia").
+* **The Output:** A **vector** of $K$ probabilities that all sum up to $1$.
+* **Decision Logic:** The class with the highest probability ($Argmax$) is chosen as the prediction.
+* **The Strategy (One-vs-Rest):** Standard Logistic Regression handles this by training $K$ separate binary classifiers (one for each class vs. all others). However, the more elegant mathematical solution is **Multinomial Logistic Regression**, which uses the **Softmax** function.
+
+
+## 2. Mathematical Definition of Softmax
+
+While Sigmoid is used for a single output, **Softmax** is the multi-dimensional generalization that handles multiple scores simultaneously.
+
+### The Problem
+When dealing with $K$ classes, the model generates $K$ separate linear scores (logits):
+$$z_1, z_2, \dots, z_K$$
+These scores could be any real numbers (e.g., $5.2, -1.1, 0.4$). We cannot use them as probabilities directly because they don't sum to $1$.
+
+### The Solution: The Softmax Formula
+The Softmax function takes the vector of scores $z$ and transforms each score into a probability $P_i$:
+
+$$\sigma(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}$$
+
+### Breaking Down the Math:
+1.  **Exponentials ($e^{z_i}$):** We take the exponent of each score. This ensures every result is positive (probabilities cannot be negative) and exponentially amplifies the differences between scores (making the "winner" stand out).
+2.  **Normalization ($\sum e^{z_j}$):** We divide each individual exponentiated score by the sum of *all* exponentiated scores. This ensures that when you add all resulting probabilities together, the sum is exactly $1.0$ (or $100\%$).
+
+
+## 3. Comparison Summary
+
+| Feature | Sigmoid (Binary) | Softmax (Multi-class) |
+| :--- | :--- | :--- |
+| **Input** | A single value $z$ | A vector of scores $[z_1, z_2, \dots, z_K]$ |
+| **Output** | A single probability $P$ | A set of probabilities $[P_1, P_2, \dots, P_K]$ |
+| **Constraint** | $0 \le P \le 1$ | $\sum_{i=1}^{K} P_i = 1$ |
+| **Clinical Example** | "Is this tumor malignant?" | "Which specific variant of cancer is this?" |
+
+---
